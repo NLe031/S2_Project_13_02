@@ -33,26 +33,58 @@
 
 */
 
-
-
-
-
-
-/* ===================================================================== */
-
-function eraseChar(textStr) {
-      return textStr.substr(0, textStr.length - 1);
+window.onload = init;
+// Creates a function 
+function init() {
+      var calcButtons = document.getElementsByClassName("calcButton");
+      for (var i = 0; i < calcButtons.length; i++) {
+            calcButtons[i].onclick = buttonClick;
+      }
+      document.getElementById("calcWindow").onkeydown = calcKeys;
 }
+// Creates a function that allows the buttons to be clicked on the calculator
+function buttonClick(e) {
+      var calcValue = document.getElementById("calcWindow").value;
+      var calcDecimal = document.getElementById("decimals").value;
+      var buttonValue = e.target.value
+      // Creates a switch case using the buttonValue a the parrameter
+      switch (buttonValue) {
+            case "del":
+                  calcValue = "";
+                  break;
+            case "bksp":
+                  calcValue = eraseChar(calcValue);
+                  break;
+            case "enter":
+                  calcValue += " = " + evalEq(calcValue, calcDecimal) + "\n";
+                  break;
+            case "prev":
+                  calcValue += lastEq(calcValue);
+                  break;
+            default:
+                  calcValue += buttonValue;
+                  break;
+      }
 
-function evalEq(textStr, decimals) {
-      var lines = textStr.split(/\r?\n/);
-      var lastLine = lines[lines.length - 1];
-      var eqValue = eval(lastLine);
-      return eqValue.toFixed(decimals);
-}
 
-function lastEq(textStr) {
-      var lines = textStr.split(/\r?\n/);
-      var lastExp = lines[lines.length - 2];
-      return lastExp.substr(0, lastExp.indexOf("=")).trim();
-}
+
+
+
+      /* ===================================================================== */
+
+      function eraseChar(textStr) {
+            return textStr.substr(0, textStr.length - 1);
+      }
+
+      function evalEq(textStr, decimals) {
+            var lines = textStr.split(/\r?\n/);
+            var lastLine = lines[lines.length - 1];
+            var eqValue = eval(lastLine);
+            return eqValue.toFixed(decimals);
+      }
+
+      function lastEq(textStr) {
+            var lines = textStr.split(/\r?\n/);
+            var lastExp = lines[lines.length - 2];
+            return lastExp.substr(0, lastExp.indexOf("=")).trim();
+      }
