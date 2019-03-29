@@ -65,26 +65,45 @@ function buttonClick(e) {
                   calcValue += buttonValue;
                   break;
       }
-
-
-
-
-
-      /* ===================================================================== */
-
-      function eraseChar(textStr) {
-            return textStr.substr(0, textStr.length - 1);
+      document.getElementById("calcWindow").value = calcValue;
+      document.getElementById("calcWindow").focus()
+}
+// Creates a function that will allow for deleting, entering, and removing the up arrow default commands
+function calcKeys(e) {
+      var calcValue = document.getElementById("calcWindow").value;
+      var calcDecimal = document.getElementById("decimals").value;
+      switch (e.key) {
+            case "Delete":
+                  calcValue = ""
+                  break;
+            case "Enter":
+                  calcValue += " = " + evalEq(calcValue, calcDecimal);
+                  break;
+            case "Arrow Up":
+                  calcValue += lastEq(calcWindow.value);
+                  e.preventDefault();
       }
+      document.getElementById("calcWindow").value = calcValue;
+}
 
-      function evalEq(textStr, decimals) {
-            var lines = textStr.split(/\r?\n/);
-            var lastLine = lines[lines.length - 1];
-            var eqValue = eval(lastLine);
-            return eqValue.toFixed(decimals);
-      }
 
-      function lastEq(textStr) {
-            var lines = textStr.split(/\r?\n/);
-            var lastExp = lines[lines.length - 2];
-            return lastExp.substr(0, lastExp.indexOf("=")).trim();
-      }
+
+
+/* ===================================================================== */
+
+function eraseChar(textStr) {
+      return textStr.substr(0, textStr.length - 1);
+}
+
+function evalEq(textStr, decimals) {
+      var lines = textStr.split(/\r?\n/);
+      var lastLine = lines[lines.length - 1];
+      var eqValue = eval(lastLine);
+      return eqValue.toFixed(decimals);
+}
+
+function lastEq(textStr) {
+      var lines = textStr.split(/\r?\n/);
+      var lastExp = lines[lines.length - 2];
+      return lastExp.substr(0, lastExp.indexOf("=")).trim();
+}
